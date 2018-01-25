@@ -1,5 +1,4 @@
 ---
-
 - name: install dependency packages
   yum:
     name: "{{ item }}"
@@ -44,6 +43,15 @@
       -openssl \
       -d /usr/local/src/nginx_build
 
+- stat: path=/usr/local/nginx/sbin/nginx
+  register: f
+
 - make:
     chdir: /usr/local/src/nginx_build/nginx/{{ nginx_build.nginx_version }}/nginx-{{ nginx_build.nginx_version }}
     target: install
+  when: not f.stat.exists
+
+- make:
+    chdir: /usr/local/src/nginx_build/nginx/{{ nginx_build.nginx_version }}/nginx-{{ nginx_build.nginx_version }}
+    target: upgrade
+  when: f.stat.exists

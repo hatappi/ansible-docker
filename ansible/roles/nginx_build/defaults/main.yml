@@ -1,5 +1,5 @@
 ---
 nginx_build:
   nginx_build_version: '0.9.14'
-  nginx_version: '1.11.10'
+  nginx_version: '1.12.2'
 
