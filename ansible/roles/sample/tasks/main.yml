@@ -11,3 +11,7 @@
 - name: show `ls /root` result
   debug: var=ls_result.stdout_lines
   when: ls_result | success
+
+- name: echo sample text
+  debug:
+    msg: "{{ sample.text }}"
