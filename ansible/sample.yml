@@ -1,6 +1,7 @@
 - hosts: all
   roles:
     - sample
+    - nginx_build
   vars:
     sample:
       text: AAAAAAAAAAAAAA

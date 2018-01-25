@@ -1,0 +1,49 @@
+---
+
+- name: install dependency packages
+  yum:
+    name: "{{ item }}"
+  with_items:
+    - diffutils
+    - file
+    - gcc
+    - gcc-c++
+    - openssl-devel
+    - perl
+    - wget
+
+- name: create nginx group
+  group:
+    name: nginx
+    state: present
+
+- name: create nginx user
+  user:
+    name: nginx
+    group: nginx
+    shell: /bin/false
+
+- name: create nginx log directory
+  file:
+    path: /var/log/nginx
+    mode: 755
+    state: directory
+
+- name: download and unarchive nginx-build
+  unarchive:
+    src: "https://github.com/cubicdaiya/nginx-build/releases/download/v{{ nginx_build.nginx_build_version }}/nginx-build-linux-amd64-{{ nginx_build.nginx_build_version }}.tar.gz"
+    dest: /usr/local/bin
+    remote_src: yes
+
+- name: nginx_build
+  command: |
+    nginx-build \
+      -v {{ nginx_build.nginx_version }}
+      -pcre \
+      -zlib \
+      -openssl \
+      -d /usr/local/src/nginx_build
+
+- make:
+    chdir: /usr/local/src/nginx_build/nginx/{{ nginx_build.nginx_version }}/nginx-{{ nginx_build.nginx_version }}
+    target: install
