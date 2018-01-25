@@ -1,0 +1,17 @@
+version: '3'
+services:
+  ansible:
+    build:
+      context: ./dockerfiles/ansible
+      dockerfile: Dockerfile
+    command: ["tail", "-f", "/dev/null"]
+    links:
+      - amazonlinux
+    volumes:
+      - ./ansible:/ansible
+  amazonlinux:
+    build:
+      context: ./dockerfiles/amazonlinux
+      dockerfile: Dockerfile
+    ports:
+      - 22:22

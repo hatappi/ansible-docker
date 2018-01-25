@@ -1,0 +1,13 @@
+- name: create temporary file
+  tempfile:
+    path: /root
+    state: file
+    prefix: sample-
+
+- name: ls /root
+  command: ls
+  register: ls_result
+
+- name: show `ls /root` result
+  debug: var=ls_result.stdout_lines
+  when: ls_result | success
