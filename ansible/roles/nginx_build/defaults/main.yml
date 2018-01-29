@@ -1,5 +1,11 @@
 ---
 nginx_build:
   nginx_build_version: '0.9.14'
-  nginx_version: '1.12.2'
+  nginx_version: '1.10.3'
+  sbin_path: /usr/local/nginx/sbin/nginx
+  conf_path: /etc/nginx/nginx.conf
+  add_options:
+    - "-pcre"
+    - "-zlib"
+    - "-openssl"
 

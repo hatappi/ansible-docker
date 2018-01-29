@@ -38,20 +38,25 @@
   command: |
     nginx-build \
       -v {{ nginx_build.nginx_version }}
-      -pcre \
-      -zlib \
-      -openssl \
-      -d /usr/local/src/nginx_build
+      --conf-path={{ nginx_build.conf_path }}
+      --sbin-path={{ nginx_build.sbin_path }}
+      -d /usr/local/src/nginx_build \
+      {{ nginx_build.add_options | join(" ") }}
 
-- stat: path=/usr/local/nginx/sbin/nginx
-  register: f
-
-- make:
+- name: make install
+  make:
     chdir: /usr/local/src/nginx_build/nginx/{{ nginx_build.nginx_version }}/nginx-{{ nginx_build.nginx_version }}
     target: install
-  when: not f.stat.exists
 
-- make:
+- name: check nginx process
+  shell: ps aux | grep nginx | grep -v grep
+  register: nginx_ps_result
+  ignore_errors: yes
+  changed_when: false
+
+- name: make upgrade
+  make:
     chdir: /usr/local/src/nginx_build/nginx/{{ nginx_build.nginx_version }}/nginx-{{ nginx_build.nginx_version }}
     target: upgrade
-  when: f.stat.exists
+  when: nginx_ps_result | success
+
