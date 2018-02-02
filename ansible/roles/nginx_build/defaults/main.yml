@@ -4,8 +4,5 @@ nginx_build:
   nginx_version: '1.10.3'
   sbin_path: /usr/local/nginx/sbin/nginx
   conf_path: /etc/nginx/nginx.conf
-  add_options:
-    - "-pcre"
-    - "-zlib"
-    - "-openssl"
+  add_options: ""
 

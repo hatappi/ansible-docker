@@ -37,11 +37,14 @@
 - name: nginx_build
   command: |
     nginx-build \
-      -v {{ nginx_build.nginx_version }}
-      --conf-path={{ nginx_build.conf_path }}
-      --sbin-path={{ nginx_build.sbin_path }}
+      -v {{ nginx_build.nginx_version }} \
+      --conf-path={{ nginx_build.conf_path }} \
+      --sbin-path={{ nginx_build.sbin_path }} \
       -d /usr/local/src/nginx_build \
-      {{ nginx_build.add_options | join(" ") }}
+      -pcre \
+      -zlib \
+      -openssl \
+      {{ nginx_build.add_options }}
 
 - name: make install
   make:
